@@ -15,7 +15,8 @@
     // check for isNaN and from 1 to result.player
     const checkPrintNumber = () => {
       if (Number.isNaN(userPrint) || !Number.isFinite(userPrint)) {
-        userPrint = parseFloat(prompt('Введите число!'));
+        userPrint = parseFloat(prompt(`
+        Введите число от 1 до ${result.player}!`));
       } else if (!(userPrint >= 1 && userPrint <= result.player)) {
         userPrint = parseFloat(prompt(
           `Введите число от 1 до ${result.player}!`));
@@ -96,7 +97,8 @@
           computerPrint = getComputerPrint(1, result.computer);
           console.log('computerPrint: ', computerPrint);
           userChoice = confirm(
-            'Какое число загадал компьютер? OK - Четное, Отмена - Нечетное');
+            `Компьютер загадал число: 
+            Четное - 'OK'  или   Нечетное - 'Отмена'?`);
           getUserChoice();
           rulesUserChoice();
           numAlert();
@@ -104,14 +106,26 @@
           return result;
         };
 
-        userStep();
-        computerStep();
+        if (!(result.player <= 0 || result.computer <= 0)) {
+          userStep();
+        } else {
+          return alert(`Игра окончена.
+          Счёт Игрок ${result.player}: Компьютер ${result.computer}`);
+        }
+
+        if (!(result.player <= 0 || result.computer <= 0)) {
+          computerStep();
+        } else {
+          return alert(`Игра окончена.
+          Счёт Игрок ${result.player}: Компьютер ${result.computer}`);
+        }
 
         if (result.player <= 0 || result.computer <= 0) {
           return alert(`Игра окончена.
                     Счёт Игрок ${result.player}: Компьютер ${result.computer}`);
         } else {
-          userPrint = parseFloat(prompt('Введите число'));
+          userPrint = parseFloat(prompt(`
+          Введите число от 1 до ${result.player}!`));
           return game();
         }
       }
