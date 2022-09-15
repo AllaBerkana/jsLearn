@@ -1,4 +1,3 @@
 'use strict';
 
-const startGame = window.marbles();
-startGame();
+window.factory.game();

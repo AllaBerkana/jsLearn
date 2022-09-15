@@ -1,136 +1,106 @@
 'use strict';
+window.factory = (() => {
+  let userPrint = '';
+  let computerPrint = 0;
+  let userChoice = 0;
+  let computerChoice = 0;
 
-(
-  () => {
-    let userPrint = parseFloat(prompt('Введите число от 1 до 5'));
-    let computerPrint = 0;
-    let userChoice = 0;
-    let computerChoice = 0;
+  const result = {
+    player: 5,
+    computer: 5,
+  };
 
-    const result = {
-      player: 5,
-      computer: 5,
-    };
+  // check for isNaN and from 1 to result.player
+  const checkPrintNumber = () => {
+    if (Number.isNaN(userPrint) || !Number.isFinite(userPrint)) {
+      userPrint = parseFloat(prompt(`Введите число корректно!`));
+    } else if (!(userPrint >= 1 && userPrint <= result.player)) {
+      userPrint = parseFloat(prompt(
+        `Введите число от 1 до ${result.player}!`));
+    }
+    return userPrint;
+  };
 
-    // check for isNaN and from 1 to result.player
-    const checkPrintNumber = () => {
-      if (Number.isNaN(userPrint) || !Number.isFinite(userPrint)) {
-        userPrint = parseFloat(prompt(`
-        Введите число от 1 до ${result.player}!`));
-      } else if (!(userPrint >= 1 && userPrint <= result.player)) {
-        userPrint = parseFloat(prompt(
-          `Введите число от 1 до ${result.player}!`));
-      }
-      return userPrint;
-    };
+  // comp guess %2
+  const getCompChoice = (min = 0, max = 1) => Math.round(min +
+    Math.random() * (max - min));
 
-    // comp guess %2
-    const getCompChoice = (min, max) => Math.round(min +
-      Math.random() * (max - min));
+  // comp print from 1 to result.computer
+  const getComputerPrint = (min = 1, max = result.computer) =>
+    Math.round(min + Math.random() * (max - min));
 
-    // comp print from 1 to result.computer
-    const getComputerPrint = (min, max) => Math.round(min +
-      Math.random() * (max - min));
+  // rules
+  const rulesComputerChoice = () => {
+    if ((computerChoice && userPrint % 2 === 0) ||
+      (!computerChoice && userPrint % 2 !== 0)) {
+      result.player -= userPrint;
+      result.computer += userPrint;
+    }
+    if ((!computerChoice && userPrint % 2 === 0) ||
+      (computerChoice && userPrint % 2 !== 0)) {
+      result.player += userPrint;
+      result.computer -= userPrint;
+    }
+  };
 
-    // user guess %2
-    const getUserChoice = () => {
-      if (userChoice) {
-        userChoice = 2;
-      } else {
-        userChoice = 1;
-      }
-      return userChoice;
-    };
+  const rulesUserChoice = () => {
+    if ((userChoice && computerPrint % 2 === 0) ||
+      (!userChoice && computerPrint % 2 !== 0)) {
+      result.player += computerPrint;
+      result.computer -= computerPrint;
+    }
+    if ((!userChoice && computerPrint % 2 === 0) ||
+      (userChoice && computerPrint % 2 !== 0)) {
+      result.player -= computerPrint;
+      result.computer += computerPrint;
+    }
+  };
 
-    // rules
-    const rulesComputerChoice = () => {
-      if ((computerChoice === 2 && userPrint % 2 === 0) ||
-        (computerChoice === 1 && userPrint % 2 !== 0)) {
-        result.player -= userPrint;
-        result.computer += userPrint;
-      }
-      if ((computerChoice === 1 && userPrint % 2 === 0) ||
-        (computerChoice === 2 && userPrint % 2 !== 0)) {
-        result.player += userPrint;
-        result.computer -= userPrint;
-      }
-    };
+  const numAlert = () => {
+    alert(`У вас шариков: ${result.player} шт.`);
+  };
 
-    const rulesUserChoice = () => {
-      if ((userChoice === 2 && computerPrint % 2 === 0) ||
-        (userChoice === 1 && computerPrint % 2 !== 0)) {
-        result.player += computerPrint;
-        result.computer -= computerPrint;
-      }
-      if ((userChoice === 1 && computerPrint % 2 === 0) ||
-        (userChoice === 2 && computerPrint % 2 !== 0)) {
-        result.player -= computerPrint;
-        result.computer += computerPrint;
-      }
-    };
+  const overGameAlert = () => alert(`Игра окончена.
+      Счёт Игрок ${result.player}: Компьютер ${result.computer}`);
 
-    const numAlert = () => {
-      alert(`У вас шариков: ${result.player} шт.`);
-    };
+  console.log('userPrint: ', userPrint);
+  console.log('userChoice: ', userChoice);
 
-    console.log('userPrint: ', userPrint);
-    console.log('userChoice: ', userChoice);
-
+  const game = () => {
+    userPrint = parseFloat(prompt(`Введите число от 1 до ${result.player}`));
     checkPrintNumber();
-
-    const game = () => {
-      if (Number.isNaN(userPrint) ||
-        !(userPrint >= 1 && userPrint <= result.player)) {
-        return alert(`Игра окончена.
-                Счёт Игрок ${result.player}: Компьютер ${result.computer}`);
+    if (Number.isNaN(userPrint) ||
+      !(userPrint >= 1 && userPrint <= result.player)) {
+      overGameAlert();
+    } else {
+      if (!(result.player <= 0 || result.computer <= 0)) {
+        computerChoice = getCompChoice();
+        console.log('computerChoice: ', computerChoice);
+        rulesComputerChoice();
+        numAlert();
+        console.log('result: ', result);
       } else {
-        const userStep = () => {
-          computerChoice = getCompChoice(1, 2);
-          console.log('computerChoice: ', computerChoice);
-          rulesComputerChoice();
-          numAlert();
-          console.log('result: ', result);
-          return result;
-        };
-
-        const computerStep = () => {
-          computerPrint = getComputerPrint(1, result.computer);
-          console.log('computerPrint: ', computerPrint);
-          userChoice = confirm(
-            `Компьютер загадал число: 
-            Четное - 'OK'  или   Нечетное - 'Отмена'?`);
-          getUserChoice();
-          rulesUserChoice();
-          numAlert();
-          console.log('result: ', result);
-          return result;
-        };
-
-        if (!(result.player <= 0 || result.computer <= 0)) {
-          userStep();
-        } else {
-          return alert(`Игра окончена.
-          Счёт Игрок ${result.player}: Компьютер ${result.computer}`);
-        }
-
-        if (!(result.player <= 0 || result.computer <= 0)) {
-          computerStep();
-        } else {
-          return alert(`Игра окончена.
-          Счёт Игрок ${result.player}: Компьютер ${result.computer}`);
-        }
-
-        if (result.player <= 0 || result.computer <= 0) {
-          return alert(`Игра окончена.
-                    Счёт Игрок ${result.player}: Компьютер ${result.computer}`);
-        } else {
-          userPrint = parseFloat(prompt(`
-          Введите число от 1 до ${result.player}!`));
-          return game();
-        }
+        overGameAlert();
+        return;
       }
-    };
-    console.log('game(): ', game());
-    window.marbles = game;
-  }
-)();
+
+      if (!(result.player <= 0 || result.computer <= 0)) {
+        computerPrint = getComputerPrint();
+        console.log('computerPrint: ', computerPrint);
+        userChoice = confirm(
+          `Компьютер загадал число: 
+            Четное - 'OK'  или   Нечетное - 'Отмена'?`);
+        rulesUserChoice();
+        numAlert();
+        console.log('result: ', result);
+      } else {
+        overGameAlert();
+        return;
+      }
+      return game();
+    }
+  };
+  return {
+    game,
+  };
+})();
