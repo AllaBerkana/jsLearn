@@ -1,5 +1,4 @@
-'use strict';
-{
+export const marbleGame = () => {
   const result = {
     player: 5,
     computer: 5,
@@ -51,48 +50,33 @@
     return result;
   };
 
-  const init = (step = 0) => {
+  const game = (step = 0) => {
     let userChoice;
     let compChoice;
 
     // проверка результатов: если кто-то победил, то завершаем игру
-    if (scoring(result.player, result.computer)) {
-      alert(`Игра окончена.
-            Счёт Игрок ${result.player}: Компьютер ${result.computer}`);
+    const resScoring = scoring(result.player, result.computer);
+    if (resScoring) {
+      alert(resScoring);
       return true;
     }
 
     if (step === 0) {
       userChoice = checkPrintNumber(result.player);
+      if (userChoice === null) return alert('Игра закончена');
       compChoice = getCompChoice(0, 1);
-      console.log('0', userChoice, compChoice);
     } else {
       compChoice = getCompChoice(1, result.computer);
       userChoice = confirm(
         `Компьютер загадал число:
           Четное - 'OK'  или   Нечетное - 'Отмена'?`);
-      console.log('1', userChoice, compChoice);
     }
 
     // написать фцию, края будет подсчитывать результат и возвращать в result
     getScores(userChoice, compChoice, step);
 
     step = step === 0 ? 1 : 0;
-    return init(step);
+    return game(step);
   };
-  init();
-}
-
-/** const getScores = (userChoice, compChoice, step) => {
-
-    if (((compChoice || !userChoice) && num % 2 === 0) ||
-      ((!compChoice || userChoice) && !num % 2 === 0)) {
-      result.player -= num;
-      result.computer += num;
-    } else if (((!compChoice || userChoice) && num % 2 === 0) ||
-      ((compChoice || !userChoice) && !num % 2 === 0)) {
-      result.player += num;
-      result.computer -= num;
-    }
-  };
-   */
+  game();
+};

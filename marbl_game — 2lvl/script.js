@@ -1,3 +1,2 @@
-'use strict';
-
-window.factory.game();
+import {marbleGame} from './game.js';
+marbleGame();
