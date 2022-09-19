@@ -26,33 +26,40 @@ export const marbleGame = () => {
     return false;
   };
 
-  const getScores = (userChoice, compChoice, step) => {
+  const getScores = (numChoice, numGuess, step) => {
+    let numFirst;
+    let numSecond;
+
     if (step === 0) {
-      if ((userChoice % 2 === 0 && compChoice) ||
-        (!userChoice % 2 === 0 && !compChoice)) {
-        result.player -= userChoice;
-        result.computer += userChoice;
-      } else {
-        result.computer -= userChoice;
-        result.player += userChoice;
-      }
+      numFirst = result.player;
+      numSecond = result.computer;
     } else {
-      if ((compChoice % 2 === 0 && userChoice) ||
-        (!compChoice % 2 === 0 && !userChoice)) {
-        result.computer -= compChoice;
-        result.player += compChoice;
-      } else {
-        result.player -= compChoice;
-        result.computer += compChoice;
-      }
+      numFirst = result.computer;
+      numSecond = result.player;
     }
-    alert(`У вас шариков: ${result.player} шт.`);
-    return result;
+
+    if ((numChoice % 2 === 0 && numGuess ||
+      (numChoice % 2 !== 0 && !numGuess))) {
+      numFirst -= numChoice;
+      numSecond += numChoice;
+      console.log('0-1', numFirst, numSecond);
+    } else {
+      numSecond -= numChoice;
+      numFirst += numChoice;
+      console.log('0-2', numFirst, numSecond);
+    }
+
+    // не знаю что возвращать, чтобы результат менялся правильно,
+    // а не от 5 всё время плясать
+    return {
+      numFirst,
+      numSecond,
+    };
   };
 
   const game = (step = 0) => {
-    let userChoice;
-    let compChoice;
+    let numChoice;
+    let numGuess;
 
     // проверка результатов: если кто-то победил, то завершаем игру
     const resScoring = scoring(result.player, result.computer);
@@ -62,18 +69,21 @@ export const marbleGame = () => {
     }
 
     if (step === 0) {
-      userChoice = checkPrintNumber(result.player);
-      if (userChoice === null) return alert('Игра закончена');
-      compChoice = getCompChoice(0, 1);
+      numChoice = checkPrintNumber(result.player);
+      if (numChoice === null) return alert('Игра закончена');
+      numGuess = getCompChoice(0, 1);
+      console.log('0-1', numChoice, numGuess);
     } else {
-      compChoice = getCompChoice(1, result.computer);
-      userChoice = confirm(
+      numChoice = getCompChoice(1, result.computer);
+      numGuess = confirm(
         `Компьютер загадал число:
           Четное - 'OK'  или   Нечетное - 'Отмена'?`);
+      console.log('0-1', numChoice, numGuess);
     }
 
     // написать фцию, края будет подсчитывать результат и возвращать в result
-    getScores(userChoice, compChoice, step);
+    getScores(numChoice, numGuess, step);
+    alert(`У вас шариков: ${result.player} шт.`);
 
     step = step === 0 ? 1 : 0;
     return game(step);
