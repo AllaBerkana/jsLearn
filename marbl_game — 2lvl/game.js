@@ -26,40 +26,32 @@ export const marbleGame = () => {
     return false;
   };
 
-  const getScores = (numChoice, numGuess, step) => {
-    let numFirst;
-    let numSecond;
-
-    if (step === 0) {
-      numFirst = result.player;
-      numSecond = result.computer;
-    } else {
-      numFirst = result.computer;
-      numSecond = result.player;
-    }
-
+  const getScores = (numChoice, numGuess, step, numFirst, numSecond) => {
     if ((numChoice % 2 === 0 && numGuess ||
       (numChoice % 2 !== 0 && !numGuess))) {
       numFirst -= numChoice;
       numSecond += numChoice;
-      console.log('0-1', numFirst, numSecond);
     } else {
       numSecond -= numChoice;
       numFirst += numChoice;
-      console.log('0-2', numFirst, numSecond);
     }
 
-    // не знаю что возвращать, чтобы результат менялся правильно,
-    // а не от 5 всё время плясать
-    return {
-      numFirst,
-      numSecond,
-    };
+    if (step === 0) {
+      result.player = numFirst;
+      result.computer = numSecond;
+    } else {
+      result.player = numSecond;
+      result.computer = numFirst;
+    }
+    console.log('result: ', result);
+    return result;
   };
 
   const game = (step = 0) => {
     let numChoice;
     let numGuess;
+    let numFirst;
+    let numSecond;
 
     // проверка результатов: если кто-то победил, то завершаем игру
     const resScoring = scoring(result.player, result.computer);
@@ -72,20 +64,24 @@ export const marbleGame = () => {
       numChoice = checkPrintNumber(result.player);
       if (numChoice === null) return alert('Игра закончена');
       numGuess = getCompChoice(0, 1);
+      numFirst = result.player;
+      numSecond = result.computer;
       console.log('0-1', numChoice, numGuess);
     } else {
       numChoice = getCompChoice(1, result.computer);
       numGuess = confirm(
         `Компьютер загадал число:
           Четное - 'OK'  или   Нечетное - 'Отмена'?`);
+      numFirst = result.computer;
+      numSecond = result.player;
       console.log('0-1', numChoice, numGuess);
     }
 
     // написать фцию, края будет подсчитывать результат и возвращать в result
-    getScores(numChoice, numGuess, step);
+    getScores(numChoice, numGuess, step, numFirst, numSecond);
     alert(`У вас шариков: ${result.player} шт.`);
-
     step = step === 0 ? 1 : 0;
+
     return game(step);
   };
   game();
