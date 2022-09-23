@@ -1,0 +1,161 @@
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  padding: 50px 0;
+  margin: 0;
+  position: relative;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+h1,
+h2,
+h3,
+ul,
+li,
+p,
+ol {
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+a {
+  display: block;
+  margin-bottom: 20px;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+h2 {
+  font-size: 28px;
+}
+
+
+.container {
+  margin: 0 auto;
+  max-width: 1400px;
+  padding: 0 30px;
+}
+
+.content {
+  padding: 30px 20px 80px;
+}
+
+.items {
+  counter-reset: list;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+
+.item {
+  position: relative;
+  border: 1px solid black;
+  width: 420px;
+  min-height: 400px;
+  margin-bottom: 30px;
+  color: #fff;
+  background-color: #616161;
+}
+
+.item__title {
+  margin-bottom: 20px;
+}
+
+.item__image {
+  width: 240px;
+}
+
+.item:after {
+  counter-increment: list;
+  content: counter(list, decimal-leading-zero);
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  color: inherit;
+  font-size: 40px;
+}
+
+.props__item {
+  font-size: 20px;
+}
+
+.item_one,
+.props__item_one {
+  background: #DEE0DF;
+  color: #000;
+}
+
+.item_two,
+.props__item_two {
+  background-color: #46a75e;
+  color: #fff;
+}
+
+.item_three,
+.props__item_three {
+  background-color: #ffc718;
+  color: #000;
+}
+
+.item_four,
+.props__item_four {
+  background: #444444;
+  color: #fff;
+}
+
+.item_five,
+.props__item_five {
+  background-color: #466ba7;
+  color: #fff;
+}
+
+.item_six,
+.props__item_six {
+  background-color: #973b3b;
+  color: #fff;
+}
+
+.ads {
+  position: fixed;
+  padding: 30px;
+  font-weight: 700;
+  right: 0;
+  bottom: 0;
+  text-align: right;
+  background-color: #ffc718;
+  animation: color 3s ease-in-out infinite;
+}
+
+@keyframes color {
+  0% {
+    background-color: #973b3b;
+    color: #fff;
+  }
+  50% {
+    background-color: #46a75e;
+  }
+  100% {
+    background-color: #ffc718;
+  }
+}
+

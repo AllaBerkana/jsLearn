@@ -7,8 +7,7 @@
   "extends": ["eslint:recommended"],
   "parserOptions": {
     "parser": "babel-eslint",
-    "ecmaVersion": "latest",
-    "sourceType": "script"
+    "ecmaVersion": "latest"
   },
   "rules": {
     "no-console": "off",
@@ -192,7 +191,7 @@
       2,
       {
         "CallExpression": {
-          "arguments": 1
+          "arguments": 2
         },
         "FunctionDeclaration": {
           "body": 1,
@@ -202,7 +201,7 @@
           "body": 1,
           "parameters": 2
         },
-        "MemberExpression": 1,
+        "MemberExpression": 2,
         "ObjectExpression": 1,
         "SwitchCase": 1,
         "ignoredNodes": [
